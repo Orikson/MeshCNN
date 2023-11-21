@@ -313,7 +313,7 @@ def extract_features(mesh):
     set_edge_lengths(mesh, edge_points)
     with np.errstate(divide='raise'):
         try:
-            for extractor in [edge_centroid]:#dihedral_angle, symmetric_opposite_angles, symmetric_ratios]:
+            for extractor in [edge_centroid]: #[dihedral_angle, symmetric_opposite_angles, symmetric_ratios]:
                 feature = extractor(mesh, edge_points)
                 features.append(feature)
             return np.concatenate(features, axis=0)
@@ -354,7 +354,15 @@ def symmetric_ratios(mesh, edge_points):
 
 
 def edge_centroid(mesh, edge_points):
-    return np.mean(mesh.vs[edge_points[:, :2]], axis=1)
+    """ computes centroid of each edge in edge_points colletion 
+    """
+    c1 = np.mean(mesh.vs[edge_points[:, :2]], axis=1)
+    c2 = np.mean(mesh.vs[[edge_points[:, 0],edge_points[:, 2]]], axis=1)
+    c3 = np.mean(mesh.vs[[edge_points[:, 0],edge_points[:, 3]]], axis=1)
+    c4 = np.mean(mesh.vs[[edge_points[:, 1],edge_points[:, 2]]], axis=1)
+    c5 = np.mean(mesh.vs[[edge_points[:, 1],edge_points[:, 3]]], axis=1)
+    centroids = np.concatenate((c1, c2, c3, c4, c5), axis=0)
+    return centroids
 
 
 def get_edge_points(mesh):
