@@ -356,11 +356,11 @@ def symmetric_ratios(mesh, edge_points):
 def edge_centroid(mesh, edge_points):
     """ computes centroid of each edge in edge_points collection 
     """
-    c1 = np.mean(mesh.vs[edge_points[:, :2]], axis=1)                       # primary edge
-    c2 = np.mean(mesh.vs[[edge_points[:, 0],edge_points[:, 2]]], axis=1)    # adjacent edges
-    c3 = np.mean(mesh.vs[[edge_points[:, 0],edge_points[:, 3]]], axis=1)
-    c4 = np.mean(mesh.vs[[edge_points[:, 1],edge_points[:, 2]]], axis=1)
-    c5 = np.mean(mesh.vs[[edge_points[:, 1],edge_points[:, 3]]], axis=1)
+    c1 = 0.5 * np.transpose(mesh.vs[edge_points[:, 0]] + mesh.vs[edge_points[:, 1]])
+    c2 = 0.5 * np.transpose(mesh.vs[edge_points[:, 0]] + mesh.vs[edge_points[:, 2]])
+    c3 = 0.5 * np.transpose(mesh.vs[edge_points[:, 0]] + mesh.vs[edge_points[:, 3]])
+    c4 = 0.5 * np.transpose(mesh.vs[edge_points[:, 1]] + mesh.vs[edge_points[:, 2]])
+    c5 = 0.5 * np.transpose(mesh.vs[edge_points[:, 1]] + mesh.vs[edge_points[:, 3]])
     centroids = np.concatenate((c1, c2, c3, c4, c5), axis=0)
     return centroids
 
